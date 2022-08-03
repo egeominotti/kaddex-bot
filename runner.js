@@ -37,10 +37,11 @@ async function main() {
     } catch (e) {
         await axios.get(telegram + e.toString())
     }
+
 }
 
 
-schedule.scheduleJob('* * * * *', async function () {
+schedule.scheduleJob('*/5 * * * *', async function () {
     await main();
 });
 
