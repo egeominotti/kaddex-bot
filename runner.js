@@ -10,6 +10,14 @@ const app = express()
 
 require('dotenv').config();
 
+let formatNumber = function (number) {
+  let splitNum;
+  number = Math.abs(number);
+  number = number.toFixed(2);
+  splitNum = number.split('.');
+  splitNum[0] = splitNum[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return splitNum.join(".");
+}
 
 const telegram =
     'https://api.telegram.org/bot'
@@ -41,9 +49,9 @@ async function main() {
         }
 
         let txt = 'Bot Staking Kaddex\n ' +
-            '\nKDA Price: $' + parseFloat(ticker.KDAUSDT).toFixed(3) + ' ' +
-            "\nKDX Price: $" + price + " " +
-            '\nCurrent TVL: $' + tvl + "" +
+            '\nKDA Price: ' + parseFloat(ticker.KDAUSDT).toFixed(3) + '$' +
+            "\nKDX Price: " + price + "$" +
+            '\nCurrent TVL: ' + formatNumber(tvl) + "$" +
             "\n" + "" +
             "\nBy kernelvoid";
 
