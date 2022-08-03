@@ -41,7 +41,7 @@ async function main() {
         }
 
         let txt = 'Bot Staking Kaddex\n ' +
-            '\nKDA Price: $' + parseFloat(ticker.KDAUSDT).toFixed(2) + ' ' +
+            '\nKDA Price: $' + parseFloat(ticker.KDAUSDT).toFixed(3) + ' ' +
             "\nKDX Price: $" + price + " " +
             '\nCurrent TVL: $' + tvl + "" +
             "\n" + "" +
