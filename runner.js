@@ -25,7 +25,7 @@ async function main() {
         tvl = res_dl.data.currentChainTvls.Kadena.toFixed(0);
     }
 
-    let text = 'TVL: ' + tvl + " PRICE: "+ price;
+    let text = 'TVL: ' + tvl + " PRICE: " + price;
     await axios.get(telegram + text)
 }
 
