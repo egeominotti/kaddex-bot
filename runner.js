@@ -29,6 +29,7 @@ async function main() {
     await axios.get(telegram + text)
 }
 
+
 //main().then().catch()
 
 schedule.scheduleJob('* * * * *', async function () {
