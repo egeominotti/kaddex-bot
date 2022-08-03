@@ -34,7 +34,7 @@ async function main() {
             tvl = res_dl.data.currentChainTvls.Kadena.toFixed(0);
         }
 
-        let text = 'Bot Kadded Italia:  TVL: ' + tvl + " PRICE: " + price;
+        let text = 'Bot Kadded Italia: TVL: ' + tvl + " PRICE: " + price;
         await axios.get(telegram + text)
 
     } catch (e) {
