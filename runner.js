@@ -32,7 +32,6 @@ async function main() {
         let res_dl = await axios.get(process.env.URL_API_DEFILAMA)
 
 
-        console.log(ticker.KDAUSDT)
         if (res_kd.status === 200) {
             price = res_kd.data[0].usdPrice.close.toFixed(3);
         }
