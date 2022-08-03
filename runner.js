@@ -3,7 +3,9 @@ const schedule = require('node-schedule');
 const moment = require('moment')
 const express = require('express')
 const app = express()
+
 require('dotenv').config();
+
 
 const telegram =
     'https://api.telegram.org/bot'
@@ -42,7 +44,7 @@ async function main() {
 }
 
 
-schedule.scheduleJob('*/5 * * * *', async function () {
+schedule.scheduleJob('* * * * *', async function () {
     await main();
 });
 
