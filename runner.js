@@ -1,7 +1,8 @@
 const axios = require('axios').default;
 const schedule = require('node-schedule');
 const moment = require('moment')
-
+const express = require('express')
+const app = express()
 require('dotenv').config();
 
 const telegram =
@@ -45,3 +46,9 @@ schedule.scheduleJob('*/5 * * * *', async function () {
     await main();
 });
 
+
+app.listen(process.env.PORT || process.env.EXPRESS_PORT, () => {
+    console.log(`Kaddex-Api-Fetcher running on ${process.env.PORT || process.env.EXPRESS_PORT}`)
+}).on('error', (err) => {
+    console.error(err)
+})
