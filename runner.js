@@ -26,6 +26,7 @@ async function main() {
         let res_kd = await axios.get(process.env.URL_API_KADDEX + "dateStart=" + current_date + "&dateEnd=" + current_date)
         let res_dl = await axios.get(process.env.URL_API_DEFILAMA)
 
+
         if (res_kd.status === 200) {
             price = res_kd.data[0].usdPrice.close.toFixed(3);
         }
@@ -34,7 +35,10 @@ async function main() {
             tvl = res_dl.data.currentChainTvls.Kadena.toFixed(0);
         }
 
-        let text = 'Bot Staking Kaddex \nCurrent TVL: ' + tvl + "\nCurrent PRICE: " + price + " \n" + "\nBy kernel_void <3";
+        console.log(tvl)
+        console.log(price)
+
+        let text = 'Bot Staking Kaddex\n \nCurrent TVL: ' + tvl + "\nCurrent PRICE: " + price + " \n" + "\nBy kernelvoid <3";
         await axios.get(telegram + text)
 
     } catch (e) {
