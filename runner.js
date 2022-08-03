@@ -34,7 +34,7 @@ async function main() {
             tvl = res_dl.data.currentChainTvls.Kadena.toFixed(0);
         }
 
-        let text = 'Bot Staking Kaddex \nCurrent TVL: ' + tvl + "\nCurrent PRICE: " + price + " \n" + "\nBy kernelvoid <3";
+        let text = 'Bot Staking Kaddex \nCurrent TVL: ' + tvl + "\nCurrent PRICE: " + price + " \n" + "\nBy kernel_void <3";
         await axios.get(telegram + text)
 
     } catch (e) {
