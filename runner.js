@@ -22,7 +22,6 @@ async function main() {
         let res_kd = await axios.get(process.env.URL_API_KADDEX + "dateStart=" + current_date + "&dateEnd=" + current_date)
         let res_dl = await axios.get(process.env.URL_API_DEFILAMA)
 
-
         if (res_kd.status === 200) {
             price = res_kd.data[0].usdPrice.close.toFixed(3);
         }
