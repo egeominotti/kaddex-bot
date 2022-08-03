@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon runner.js"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +13,7 @@
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",
     "moment": "^2.29.4",
-    "node-schedule": "^2.1.0"
+    "node-schedule": "^2.1.0",
+    "nodemon": "^2.0.19"
   }
 }
