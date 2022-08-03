@@ -12,25 +12,31 @@ const telegram =
 
 async function main() {
 
+    const current_date = moment().format("Y-MM-DD")
+
     let tvl = 0;
     let price = 0
 
-    let current_date = moment().format("Y-MM-DD")
+    try {
 
-    let res_kd = await axios.get(process.env.URL_API_KADDEX + "dateStart=" + current_date + "&dateEnd=" + current_date)
-    let res_dl = await axios.get(process.env.URL_API_DEFILAMA)
+        let res_kd = await axios.get(process.env.URL_API_KADDEX + "dateStart=" + current_date + "&dateEnd=" + current_date)
+        let res_dl = await axios.get(process.env.URL_API_DEFILAMA)
 
 
-    if (res_kd.status === 200) {
-        price = res_kd.data[0].usdPrice.close.toFixed(3);
+        if (res_kd.status === 200) {
+            price = res_kd.data[0].usdPrice.close.toFixed(3);
+        }
+
+        if (res_dl.status === 200) {
+            tvl = res_dl.data.currentChainTvls.Kadena.toFixed(0);
+        }
+
+        let text = 'TVL: ' + tvl + " PRICE: " + price;
+        await axios.get(telegram + text)
+
+    } catch (e) {
+        await axios.get(telegram + e.toString())
     }
-
-    if (res_dl.status === 200) {
-        tvl = res_dl.data.currentChainTvls.Kadena.toFixed(0);
-    }
-
-    let text = 'TVL: ' + tvl + " PRICE: " + price;
-    await axios.get(telegram + text)
 }
 
 schedule.scheduleJob('* * * * *', async function () {
