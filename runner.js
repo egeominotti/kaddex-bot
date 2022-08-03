@@ -3,7 +3,12 @@ const schedule = require('node-schedule');
 const moment = require('moment')
 require('dotenv').config();
 
-const telegram = 'https://api.telegram.org/bot' + process.env.BOT_TOEKN + '/sendMessage?chat_id=' + process.env.CHAT_ID + '&parse_mode=Markdown&text='
+const telegram =
+    'https://api.telegram.org/bot'
+    + process.env.BOT_TOEKN
+    + '/sendMessage?chat_id='
+    + process.env.CHAT_ID +
+    '&parse_mode=Markdown&text='
 
 async function main() {
 
@@ -17,7 +22,6 @@ async function main() {
 
 
     if (res_kd.status === 200) {
-        console.log(res_kd)
         price = res_kd.data[0].usdPrice.close.toFixed(3);
     }
 
@@ -28,9 +32,6 @@ async function main() {
     let text = 'TVL: ' + tvl + " PRICE: " + price;
     await axios.get(telegram + text)
 }
-
-
-//main().then().catch()
 
 schedule.scheduleJob('* * * * *', async function () {
     await main();
