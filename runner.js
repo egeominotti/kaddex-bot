@@ -10,13 +10,13 @@ async function main() {
     let current_date = moment().format("Y-MM-DD")
 
     const res_kd = await axios.get(URL_API_KADDEX + "dateStart=" + current_date + "&dateEnd=" + current_date)
-    if(res_kd.status === 200){
+    if (res_kd.status === 200) {
         const close = res_kd.data[0].usdPrice.close;
         console.log(close)
     }
 
     const res_dl = await axios.get(URL_API_DEFILAMA)
-    if(res_dl.status === 200){
+    if (res_dl.status === 200) {
         let tvl = res_dl.data.currentChainTvls.Kadena;
         console.log(tvl)
     }
