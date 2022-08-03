@@ -38,7 +38,7 @@ async function main() {
         console.log(tvl)
         console.log(price)
 
-        let text = 'Bot Staking Kaddex\n \nCurrent TVL: ' + tvl + "\nCurrent PRICE: " + price + " \n" + "\nBy kernelvoid <3";
+        let text = 'Bot Staking Kaddex\n \nCurrent TVL: ' + tvl + "\nCurrent PRICE: " + price + " \n" + "\nBy kernelvoid";
         await axios.get(telegram + text)
 
     } catch (e) {
