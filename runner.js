@@ -64,7 +64,7 @@ async function main() {
 }
 
 
-schedule.scheduleJob('* * * * *', async function () {
+schedule.scheduleJob('*/30 * * * *', async function () {
     await main();
 });
 
