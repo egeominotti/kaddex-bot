@@ -1,24 +1,33 @@
 const axios = require('axios').default;
 const schedule = require('node-schedule');
+const moment = require('moment')
 
 const URL_API_DEFILAMA = 'https://api.llama.fi/protocol/kaddex';
 const URL_API_KADDEX = 'https://analytics-api.kaddex.com/candles?currency=coin&asset=kaddex.kdx&'
 
-// dateStart=2022-08-03&dateEnd=2022-08-03
-
 async function main() {
 
-    const res_kaddex = await axios.get(URL_API_KADDEX + "")
-    console.log(res_kaddex)
+    let current_date = moment().format("Y-MM-DD")
 
-    const res_defi = await axios.get(URL_API_DEFILAMA)
-    if (res_defi.data !== undefined) {
-        let tvl = res_defi.data.currentChainTvls.Kadena;
+    const res_kd = await axios.get(URL_API_KADDEX + "dateStart=" + current_date + "&dateEnd=" + current_date)
+    if(res_kd.status === 200){
+        const close = res_kd.data[0].usdPrice.close;
+        console.log(close)
+    }
+
+    const res_dl = await axios.get(URL_API_DEFILAMA)
+    if(res_dl.status === 200){
+        let tvl = res_dl.data.currentChainTvls.Kadena;
         console.log(tvl)
     }
 }
 
+main().then().catch()
+
+/*
 schedule.scheduleJob('* * * * *', async function () {
     await main();
 });
+
+ */
 
