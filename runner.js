@@ -11,12 +11,12 @@ const app = express()
 require('dotenv').config();
 
 let formatNumber = function (number) {
-  let splitNum;
-  number = Math.abs(number);
-  number = number.toFixed(2);
-  splitNum = number.split('.');
-  splitNum[0] = splitNum[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  return splitNum.join(".");
+    let splitNum;
+    number = Math.abs(number);
+    number = number.toFixed(2);
+    splitNum = number.split('.');
+    splitNum[0] = splitNum[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return splitNum.join(".");
 }
 
 const telegram =
