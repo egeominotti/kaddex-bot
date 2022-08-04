@@ -1,5 +1,4 @@
 const axios = require('axios').default;
-const schedule = require('node-schedule');
 const moment = require('moment')
 const Binance = require('node-binance-api');
 const binance = new Binance().options({});
@@ -44,7 +43,7 @@ async function main() {
         }
 
         if (res_dl.status === 200) {
-            tvl = parseFloat(res_dl.data.currentChainTvls.Kadena).toFixed(1);
+            tvl = parseFloat(res_dl.data.currentChainTvls.Kadena).toFixed(2);
         }
 
         console.log(tvl)
@@ -73,7 +72,4 @@ async function main() {
 
 }
 
-
-schedule.scheduleJob('* * * * *', async function () {
-    await main();
-});
+setInterval(main,30000);
