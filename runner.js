@@ -1,12 +1,8 @@
 const axios = require('axios').default;
 const schedule = require('node-schedule');
 const moment = require('moment')
-const express = require('express')
 const Binance = require('node-binance-api');
-
 const binance = new Binance().options({});
-
-const app = express()
 
 require('dotenv').config();
 
@@ -45,7 +41,7 @@ async function main() {
         }
 
         if (res_dl.status === 200) {
-            tvl = parseFloat(res_dl.data.currentChainTvls.Kadena).toFixed(0);
+            tvl = parseFloat(res_dl.data.currentChainTvls.Kadena).toFixed(1);
         }
 
         let txt = 'Bot Staking Kaddex\n ' +
@@ -64,13 +60,6 @@ async function main() {
 }
 
 
-schedule.scheduleJob('*/30 * * * *', async function () {
+schedule.scheduleJob('* * * * *', async function () {
     await main();
 });
-
-
-app.listen(process.env.PORT || process.env.EXPRESS_PORT, () => {
-    console.log(`Kaddex-Api-Fetcher running on ${process.env.PORT || process.env.EXPRESS_PORT}`)
-}).on('error', (err) => {
-    console.error(err)
-})

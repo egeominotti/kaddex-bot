@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon runner.js"
+    "start": "pm2 start runner.js"
   },
   "keywords": [],
   "author": "",
