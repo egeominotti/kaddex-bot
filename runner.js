@@ -2,6 +2,9 @@ const axios = require('axios').default;
 const moment = require('moment')
 const Binance = require('node-binance-api');
 const binance = new Binance().options({});
+const express = require('express')
+
+const app = express()
 
 require('dotenv').config();
 
@@ -73,4 +76,11 @@ async function main() {
     }
 }
 
-//setInterval(main, 30000);
+app.listen(process.env.PORT || process.env.EXPRESS_PORT, () => {
+    console.log(`Kaddex-Api-Fetcher running on ${process.env.PORT || process.env.EXPRESS_PORT}`)
+}).on('error', (err) => {
+    console.error(err)
+})
+
+
+setInterval(main, 30000);
