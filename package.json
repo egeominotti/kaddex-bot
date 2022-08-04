@@ -1,7 +1,7 @@
 {
   "name": "kaddex-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "Bot for fetch data from Kaddex and Defilama",
   "main": "index.js",
   "scripts": {
     "start": "node runner.js"
