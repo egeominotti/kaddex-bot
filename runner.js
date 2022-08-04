@@ -24,6 +24,7 @@ const telegram =
     + process.env.CHAT_ID +
     '&parse_mode=Markdown&text='
 
+
 async function main() {
 
     const current_date = moment().format("Y-MM-DD")
@@ -33,13 +34,10 @@ async function main() {
 
     try {
 
-        let ticker = await binance.prices();
         let res_kd = await axios.get(process.env.URL_API_KADDEX + "dateStart=" + current_date + "&dateEnd=" + current_date)
         let res_dl = await axios.get(process.env.URL_API_DEFILAMA)
 
-
         if (res_kd.status === 200) {
-            console.log(res_kd.data[0])
             price = res_kd.data[0].usdPrice.close.toFixed(3);
         }
 
@@ -54,15 +52,17 @@ async function main() {
 
         if (tvl !== tvl_stored || price !== price_stored) {
 
+            let ticker = await binance.prices();
+
             tvl_stored = tvl;
             price_stored = price;
 
-            let txt = 'Bot Staking Kaddex\n ' +
+            let txt = '-- Bot Staking Kaddex --\n ' +
                 '\nKDA Price: ' + parseFloat(ticker.KDAUSDT).toFixed(3) + '$' +
                 "\nKDX Price: " + price + "$" +
                 '\nCurrent TVL: ' + formatNumber(tvl) + "$" +
                 "\n" + "" +
-                "\nBy kernelvoid";
+                "\nValue Updated: " + "" + moment().format("Y-MM-DD h:mm:ss a") + " \n"
 
             await axios.get(telegram + txt)
         }
@@ -70,7 +70,6 @@ async function main() {
     } catch (e) {
         await axios.get(telegram + e.toString())
     }
-
 }
 
-setInterval(main,30000);
+setInterval(main, 30000);
