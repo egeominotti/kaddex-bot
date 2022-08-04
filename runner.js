@@ -6,6 +6,9 @@ const binance = new Binance().options({});
 
 require('dotenv').config();
 
+let tvl_stored = 0;
+let price_stored = 0;
+
 let formatNumber = function (number) {
     let splitNum;
     number = Math.abs(number);
@@ -44,14 +47,25 @@ async function main() {
             tvl = parseFloat(res_dl.data.currentChainTvls.Kadena).toFixed(1);
         }
 
-        let txt = 'Bot Staking Kaddex\n ' +
-            '\nKDA Price: ' + parseFloat(ticker.KDAUSDT).toFixed(3) + '$' +
-            "\nKDX Price: " + price + "$" +
-            '\nCurrent TVL: ' + formatNumber(tvl) + "$" +
-            "\n" + "" +
-            "\nBy kernelvoid";
+        console.log(tvl)
+        console.log(tvl_stored)
+        console.log(price)
+        console.log(price_stored)
 
-        await axios.get(telegram + txt)
+        if (tvl > tvl_stored && price > price_stored) {
+
+            tvl_stored = tvl;
+            price_stored = price;
+
+            let txt = 'Bot Staking Kaddex\n ' +
+                '\nKDA Price: ' + parseFloat(ticker.KDAUSDT).toFixed(3) + '$' +
+                "\nKDX Price: " + price + "$" +
+                '\nCurrent TVL: ' + formatNumber(tvl) + "$" +
+                "\n" + "" +
+                "\nBy kernelvoid";
+
+            await axios.get(telegram + txt)
+        }
 
     } catch (e) {
         await axios.get(telegram + e.toString())
