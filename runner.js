@@ -71,7 +71,7 @@ async function main() {
                 '\nTotal Supply: ' + formatNumber(total_supply) + "$" +
                 "\n" + "" +
                 "\nValue Updated: " + "" + moment().format("Y-MM-DD") + " \n" +
-                '----------------------------------------------------\n '
+                '--------------------------------------------------\n '
 
             await axios.get(telegram + txt)
         }
