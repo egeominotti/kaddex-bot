@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start runner.js"
+    "start": "node runner.js"
   },
   "keywords": [],
   "author": "",
