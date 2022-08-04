@@ -62,9 +62,10 @@ async function main() {
                 "\nKDX Price: " + price + "$" +
                 '\nCurrent TVL: ' + formatNumber(tvl) + "$" +
                 "\n" + "" +
-                "\nValue Updated: " + "" + moment().format("Y-MM-DD h:mm:ss a") + " \n"
+                "\nValue Updated: " + "" + moment().format("Y-MM-DD h:mm:ss a") + " \n" +
+                '---------------------------------------------------------------------\n '
 
-            await axios.get(telegram + txt)
+                await axios.get(telegram + txt)
         }
 
     } catch (e) {
