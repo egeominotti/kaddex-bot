@@ -39,6 +39,7 @@ async function main() {
 
 
         if (res_kd.status === 200) {
+            console.log(res_kd.data[0])
             price = res_kd.data[0].usdPrice.close.toFixed(3);
         }
 
@@ -51,7 +52,7 @@ async function main() {
         console.log(price)
         console.log(price_stored)
 
-        if (tvl > tvl_stored && price > price_stored) {
+        if (tvl !== tvl_stored || price !== price_stored) {
 
             tvl_stored = tvl;
             price_stored = price;
