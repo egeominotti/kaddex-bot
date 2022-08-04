@@ -50,10 +50,10 @@ async function main() {
             tvl = parseFloat(res_dl.data.currentChainTvls.Kadena).toFixed(2);
         }
 
-        console.log(tvl)
-        console.log(tvl_stored)
-        console.log(price)
-        console.log(price_stored)
+        console.log("TVL: " + tvl)
+        console.log("TVL Stored: " + tvl_stored)
+        console.log("Price KDX: " + price)
+        console.log("Price Stored: " + price_stored)
 
         if (tvl !== tvl_stored || price !== price_stored) {
 
@@ -70,7 +70,7 @@ async function main() {
                 "\nValue Updated: " + "" + moment().format("Y-MM-DD h:mm:ss a") + " \n" +
                 '---------------------------------------------------------------------\n '
 
-                await axios.get(telegram + txt)
+            await axios.get(telegram + txt)
         }
 
     } catch (e) {
@@ -83,6 +83,5 @@ app.listen(process.env.PORT || process.env.EXPRESS_PORT, () => {
 }).on('error', (err) => {
     console.error(err)
 })
-
 
 setInterval(main, 30000);
