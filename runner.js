@@ -30,6 +30,8 @@ const telegram =
 
 async function main() {
 
+    console.log("I'm alive!!");
+
     const current_date = moment().format("Y-MM-DD")
 
     let tvl = 0;
