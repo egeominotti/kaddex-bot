@@ -77,8 +77,8 @@ async function main() {
 
             let percentage = '';
 
-            if (value_splitted[1].includes('+')) percentage = 'piu';
-            if (value_splitted[1].includes('-')) percentage = 'meno';
+            if (value_splitted[1].includes('+')) percentage = 'incremento';
+            if (value_splitted[1].includes('-')) percentage = 'decremento';
 
             const value_kdx = value_splitted[1] + " " + percentage + " " + value_splitted[2]
             const market_cap = value_splitted[5].replace('supply', '').replace('-', '').replace(' ', '')
