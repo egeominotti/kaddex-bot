@@ -3,7 +3,13 @@ const moment = require('moment')
 const puppeteer = require('puppeteer');
 const Binance = require('node-binance-api');
 const schedule = require('node-schedule');
+const EventEmitter = require('events');
+
 const binance = new Binance().options({});
+
+const emitter = new EventEmitter()
+emitter.setMaxListeners(100)
+emitter.setMaxListeners(0)
 
 require('dotenv').config();
 
