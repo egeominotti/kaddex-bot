@@ -110,7 +110,7 @@ async function main() {
     }
 }
 
-schedule.scheduleJob('*/2 * * * *', async function () {
+schedule.scheduleJob('*/30 * * * *', async function () {
     await main();
 });
 
