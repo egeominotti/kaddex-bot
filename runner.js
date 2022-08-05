@@ -8,8 +8,7 @@ const EventEmitter = require('events');
 const binance = new Binance().options({});
 
 const emitter = new EventEmitter()
-emitter.setMaxListeners(100)
-emitter.setMaxListeners(0)
+emitter.setMaxListeners(1000)
 
 require('dotenv').config();
 
