@@ -45,22 +45,21 @@ async function main() {
             args: ['--no-sandbox']
         });
 
-
         let res_kd = await axios.get(process.env.URL_API_KADDEX + "dateStart=" + current_date + "&dateEnd=" + current_date)
         let res_dl = await axios.get(process.env.URL_API_DEFILAMA)
 
         if (res_kd.status === 200) {
-            price = res_kd.data[0].usdPrice.close.toFixed(3);
+            if (res_kd.data[0].usdPrice !== undefined) {
+                price = res_kd.data[0].usdPrice.close.toFixed(3);
+            }
         }
 
         if (res_dl.status === 200) {
-            tvl = parseFloat(res_dl.data.currentChainTvls.Kadena).toFixed(2);
+            if (res_dl.data.currentChainTvls !== undefined) {
+                tvl = parseFloat(res_dl.data.currentChainTvls.Kadena).toFixed(2);
+            }
         }
 
-        console.log("TVL: " + tvl)
-        console.log("TVL Stored: " + tvl_stored)
-        console.log("Price KDX: " + price)
-        console.log("Price Stored: " + price_stored)
 
         if (tvl !== tvl_stored || price !== price_stored) {
 
@@ -68,6 +67,7 @@ async function main() {
             await page.goto(URL_API_KADDEX_STATS, {waitUntil: 'networkidle2'});
             const element = await page.waitForSelector('.FlexContainer__STYFlexContainer-sc-16sly3k-0.flviZN.column');
             const value = await element.evaluate(el => el.textContent);
+
             console.log(value.split(" "))
 
             const value_splitted = value.split(" ");
@@ -78,6 +78,10 @@ async function main() {
             console.log("Market cap: " + market_cap)
             console.log("Circulating supply: " + circulating_supply)
             console.log("Burned: " + burned)
+            console.log("TVL: " + tvl)
+            console.log("TVL Stored: " + tvl_stored)
+            console.log("Price KDX: " + price)
+            console.log("Price Stored: " + price_stored)
 
             let ticker = await binance.prices();
 
