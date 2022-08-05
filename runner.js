@@ -2,6 +2,7 @@ const axios = require('axios').default;
 const moment = require('moment')
 const puppeteer = require('puppeteer');
 const Binance = require('node-binance-api');
+const schedule = require('node-schedule');
 const binance = new Binance().options({});
 
 require('dotenv').config();
@@ -109,4 +110,9 @@ async function main() {
     }
 }
 
-setInterval(main, 50000);
+schedule.scheduleJob('*/2 * * * *', async function () {
+    await main();
+});
+
+
+//setInterval(main, 50000);
