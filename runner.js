@@ -1,5 +1,6 @@
 const axios = require('axios').default;
 const moment = require('moment')
+const puppeteer = require('puppeteer');
 const Binance = require('node-binance-api');
 const binance = new Binance().options({});
 
@@ -36,6 +37,27 @@ async function main() {
 
     try {
 
+        const browser = await puppeteer.launch({
+            headless: true,
+            slowMo: 500,
+            args: ['--no-sandbox']
+        });
+
+        const page = await browser.newPage();
+        await page.goto('https://swap.kaddex.com/analytics/kdx', {waitUntil: 'networkidle2'});
+        const element = await page.waitForSelector('.FlexContainer__STYFlexContainer-sc-16sly3k-0.flviZN.column');
+        const value = await element.evaluate(el => el.textContent);
+        console.log(value.split(" "))
+
+        const value_splitted = value.split(" ");
+        const market_cap = value_splitted[5].replace('supply', '').replace('-', '').replace(' ', '')
+        const circulating_supply = value_splitted[8].replace('supply', ' ').replace(' ', '')
+        const burned = value_splitted[10].replace('%Burned', ' ').replace(' ', '')
+
+        console.log("Market cap: " + market_cap)
+        console.log("Circulating supply: " + circulating_supply)
+        console.log("Burned: " + burned)
+
         let res_kd = await axios.get(process.env.URL_API_KADDEX + "dateStart=" + current_date + "&dateEnd=" + current_date)
         let res_dl = await axios.get(process.env.URL_API_DEFILAMA)
 
@@ -59,16 +81,16 @@ async function main() {
             tvl_stored = tvl;
             price_stored = price;
 
-            let total_supply = tvl / parseFloat(ticker.KDAUSDT);
-
-            let txt = '-- Bot Kaddex --\n ' +
+            let txt = '-- KADDEX BOT --\n ' +
                 '\nKDA Price: ' + parseFloat(ticker.KDAUSDT).toFixed(3) + '$' +
                 "\nKDX Price: " + price + "$" +
                 '\nCurrent TVL: ' + formatNumber(tvl) + "$" +
-                '\nTotal Supply: ' + formatNumber(total_supply) + "$" +
+                '\nMarket Cap: ' + market_cap + "$" +
+                '\nCirculating supply: ' + circulating_supply + "$" +
+                '\nBurned: ' + burned + "$" +
                 "\n" + "" +
                 "\nValue Updated: " + "" + moment().format("Y-MM-DD") + " \n" +
-                '----------------------------------------------\n '
+                "\n" + ""
 
             await axios.get(telegram + txt)
         }
@@ -78,4 +100,4 @@ async function main() {
     }
 }
 
-setInterval(main, 500000);
+setInterval(main, 50000);
