@@ -68,6 +68,8 @@ async function main() {
             const element = await page.waitForSelector('.FlexContainer__STYFlexContainer-sc-16sly3k-0.flviZN.column');
             const value = await element.evaluate(el => el.textContent);
 
+            await browser.close();
+
             console.log(value.split(" "))
 
             const value_splitted = value.split(" ");
