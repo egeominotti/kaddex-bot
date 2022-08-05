@@ -67,7 +67,6 @@ async function main() {
             const page = await browser.newPage();
 
             await page.goto(URL_API_KADDEX_STATS, {waitUntil: 'networkidle2'});
-            //await page.screenshot({path: 'buddy-screenshot.png'});
             const element = await page.waitForSelector('.FlexContainer__STYFlexContainer-sc-16sly3k-0.flviZN.column');
             const value = await element.evaluate(el => el.textContent);
 
@@ -120,7 +119,7 @@ async function main() {
     }
 }
 
-schedule.scheduleJob('* * * * *', async function () {
+schedule.scheduleJob('*/30 * * * *', async function () {
     await main();
 });
 
