@@ -26,7 +26,7 @@ const telegram =
     + process.env.BOT_TOEKN
     + '/sendMessage?chat_id='
     + process.env.CHAT_ID +
-    '&parse_mode=Markdown&text='
+    'parse_mode=html&text='
 
 
 async function main() {
@@ -65,19 +65,27 @@ async function main() {
         if (tvl !== tvl_stored || price !== price_stored) {
 
             const page = await browser.newPage();
+
             await page.goto(URL_API_KADDEX_STATS, {waitUntil: 'networkidle2'});
+            //await page.screenshot({path: 'buddy-screenshot.png'});
             const element = await page.waitForSelector('.FlexContainer__STYFlexContainer-sc-16sly3k-0.flviZN.column');
             const value = await element.evaluate(el => el.textContent);
-
-            await browser.close();
 
             console.log(value.split(" "))
 
             const value_splitted = value.split(" ");
+
+            let percentage = '';
+
+            if (value_splitted[1].includes('+')) percentage = 'piu';
+            if (value_splitted[1].includes('-')) percentage = 'meno';
+
+            const value_kdx = value_splitted[1] + " " + percentage + " " + value_splitted[2]
             const market_cap = value_splitted[5].replace('supply', '').replace('-', '').replace(' ', '')
             const circulating_supply = value_splitted[8].replace('supply', ' ').replace(' ', '')
             const burned = value_splitted[10].replace('%Burned', ' ').replace(' ', '')
 
+            console.log("Value kdx: " + value_kdx)
             console.log("Market cap: " + market_cap)
             console.log("Circulating supply: " + circulating_supply)
             console.log("Burned: " + burned)
@@ -91,9 +99,10 @@ async function main() {
             tvl_stored = tvl;
             price_stored = price;
 
+
             let txt = '-- KADDEX BOT --\n ' +
                 '\nKDA Price: ' + parseFloat(ticker.KDAUSDT).toFixed(3) + '$' +
-                "\nKDX Price: " + price + "$" +
+                "\nKDX Price: " + String(value_kdx) + "%" +
                 '\nCurrent TVL: ' + formatNumber(tvl) + "$" +
                 '\nMarket Cap: ' + market_cap + "$" +
                 '\nCirculating supply: ' + circulating_supply + "$" +
@@ -102,7 +111,8 @@ async function main() {
                 "\nValue Updated: " + "" + moment().format("Y-MM-DD h:mm:ss") + " \n" +
                 "\n" + ""
 
-            await axios.get(telegram + txt)
+            await axios.get(telegram +  txt)
+            await browser.close();
         }
 
     } catch (e) {
@@ -110,7 +120,7 @@ async function main() {
     }
 }
 
-schedule.scheduleJob('*/30 * * * *', async function () {
+schedule.scheduleJob('* * * * *', async function () {
     await main();
 });
 
