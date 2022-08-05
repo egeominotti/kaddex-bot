@@ -9,6 +9,8 @@ require('dotenv').config();
 let tvl_stored = 0;
 let price_stored = 0;
 
+const URL_API_KADDEX_STATS = 'https://swap.kaddex.com/analytics/kdx';
+
 let formatNumber = function (number) {
     let splitNum;
     number = Math.abs(number);
@@ -43,20 +45,6 @@ async function main() {
             args: ['--no-sandbox']
         });
 
-        const page = await browser.newPage();
-        await page.goto('https://swap.kaddex.com/analytics/kdx', {waitUntil: 'networkidle2'});
-        const element = await page.waitForSelector('.FlexContainer__STYFlexContainer-sc-16sly3k-0.flviZN.column');
-        const value = await element.evaluate(el => el.textContent);
-        console.log(value.split(" "))
-
-        const value_splitted = value.split(" ");
-        const market_cap = value_splitted[5].replace('supply', '').replace('-', '').replace(' ', '')
-        const circulating_supply = value_splitted[8].replace('supply', ' ').replace(' ', '')
-        const burned = value_splitted[10].replace('%Burned', ' ').replace(' ', '')
-
-        console.log("Market cap: " + market_cap)
-        console.log("Circulating supply: " + circulating_supply)
-        console.log("Burned: " + burned)
 
         let res_kd = await axios.get(process.env.URL_API_KADDEX + "dateStart=" + current_date + "&dateEnd=" + current_date)
         let res_dl = await axios.get(process.env.URL_API_DEFILAMA)
@@ -75,6 +63,21 @@ async function main() {
         console.log("Price Stored: " + price_stored)
 
         if (tvl !== tvl_stored || price !== price_stored) {
+
+            const page = await browser.newPage();
+            await page.goto(URL_API_KADDEX_STATS, {waitUntil: 'networkidle2'});
+            const element = await page.waitForSelector('.FlexContainer__STYFlexContainer-sc-16sly3k-0.flviZN.column');
+            const value = await element.evaluate(el => el.textContent);
+            console.log(value.split(" "))
+
+            const value_splitted = value.split(" ");
+            const market_cap = value_splitted[5].replace('supply', '').replace('-', '').replace(' ', '')
+            const circulating_supply = value_splitted[8].replace('supply', ' ').replace(' ', '')
+            const burned = value_splitted[10].replace('%Burned', ' ').replace(' ', '')
+
+            console.log("Market cap: " + market_cap)
+            console.log("Circulating supply: " + circulating_supply)
+            console.log("Burned: " + burned)
 
             let ticker = await binance.prices();
 
