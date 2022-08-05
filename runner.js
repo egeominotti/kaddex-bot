@@ -96,7 +96,7 @@ async function main() {
                 '\nCirculating supply: ' + circulating_supply + "$" +
                 '\nBurned: ' + burned + "$" +
                 "\n" + "" +
-                "\nValue Updated: " + "" + moment().format("Y-MM-DD") + " \n" +
+                "\nValue Updated: " + "" + moment().format("Y-MM-DD h:mm:ss") + " \n" +
                 "\n" + ""
 
             await axios.get(telegram + txt)
