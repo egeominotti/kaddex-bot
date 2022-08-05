@@ -61,14 +61,14 @@ async function main() {
 
             let total_supply = tvl / parseFloat(ticker.KDAUSDT);
 
-            let txt = '-- Bot Staking Kaddex --\n ' +
+            let txt = '-- Bot Kaddex --\n ' +
                 '\nKDA Price: ' + parseFloat(ticker.KDAUSDT).toFixed(3) + '$' +
                 "\nKDX Price: " + price + "$" +
                 '\nCurrent TVL: ' + formatNumber(tvl) + "$" +
                 '\nTotal Supply: ' + formatNumber(total_supply) + "$" +
                 "\n" + "" +
                 "\nValue Updated: " + "" + moment().format("Y-MM-DD") + " \n" +
-                '------------------------------------------------\n '
+                '----------------------------------------------\n '
 
             await axios.get(telegram + txt)
         }
