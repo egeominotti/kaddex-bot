@@ -117,6 +117,6 @@ async function main() {
     }
 }
 
-schedule.scheduleJob('* * * * *', async function () {
+schedule.scheduleJob('0 * * * *', async function () {
     await main();
 });
