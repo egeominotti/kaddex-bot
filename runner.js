@@ -62,8 +62,6 @@ async function main() {
             }
         }
 
-
-
         const browser = await puppeteer.launch({
             headless: true,
             slowMo: 500,
@@ -86,9 +84,9 @@ async function main() {
         if (value_splitted[1].includes('-')) percentage = ' decrementato del ';
 
         const value_kdx = value_splitted[1] + "$ " + percentage + " " + value_splitted[2]
-        const market_cap = value_splitted[5].replace('supply', '').replace('-', '').replace(' ', '').replace(/[^a-zA-Z0-9 ]/g, '');
-        const circulating_supply = value_splitted[8].replace('supply', ' ').replace(' ', '').replace(/[^a-zA-Z0-9 ]/g, '');
-        const burned = value_splitted[10].replace('%Burned', ' ').replace(' ', '').replace(/[^a-zA-Z0-9 ]/g, '');
+        const market_cap = value_splitted[5].replace('supply', '').replace('-', '').replace(' ', '')
+        const circulating_supply = value_splitted[8].replace('supply', ' ').replace(' ', '')
+        const burned = value_splitted[10].replace('%Burned', ' ').replace(' ', '')
 
         console.log("Value kdx: " + value_kdx)
         console.log("Market cap: " + market_cap)
@@ -104,8 +102,8 @@ async function main() {
             "\nKDX Price: " + String(value_kdx) + "%" +
             '\nCurrent TVL: ' + formatNumber(tvl) + "$" +
             '\nMarket Cap: ' + market_cap + "$" +
-            '\nCirculating supply: ' + circulating_supply + "$" +
-            '\nBurned: ' + burned + "$" +
+            '\nCirculating supply: ' + circulating_supply + " KDX" +
+            '\nBurned: ' + burned + " KDX" +
             "\n" + "" +
             "\nValue Updated: " + "" + moment().format("Y-MM-DD h:mm:ss") + " \n" +
             "\n" + ""
@@ -120,6 +118,6 @@ async function main() {
     }
 }
 
-schedule.scheduleJob('*/30 * * * *', async function () {
+schedule.scheduleJob('* * * * *', async function () {
     await main();
 });
