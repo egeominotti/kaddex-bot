@@ -75,14 +75,15 @@ async function main() {
         const element = await page.waitForSelector('.FlexContainer__STYFlexContainer-sc-16sly3k-0.flviZN.column');
         const value = await element.evaluate(el => el.textContent);
         await browser.close();
+
         console.log(value.split(" "))
 
         const value_splitted = value.split(" ");
 
         let percentage = '';
 
-        if (value_splitted[1].includes('+')) percentage = 'è incremento del ';
-        if (value_splitted[1].includes('-')) percentage = 'è decrementato del ';
+        if (value_splitted[1].includes('+')) percentage = ' incremento del ';
+        if (value_splitted[1].includes('-')) percentage = ' decrementato del ';
 
         const value_kdx = value_splitted[1] + " " + percentage + " " + value_splitted[2]
         const market_cap = value_splitted[5].replace('supply', '').replace('-', '').replace(' ', '').replace(/[^a-zA-Z0-9 ]/g, '');
