@@ -80,35 +80,38 @@ async function main() {
 
         let percentage = '';
 
-        if (value_splitted[1].includes('+')) percentage = ' incremento del ';
-        if (value_splitted[1].includes('-')) percentage = ' decrementato del ';
+        if (!value_splitted[1].includes('--')) {
 
-        const value_kdx = value_splitted[1] + "$ " + percentage + " " + value_splitted[2]
-        const market_cap = value_splitted[5].replace('supply', '').replace('-', '').replace(' ', '')
-        const circulating_supply = value_splitted[8].replace('supply', ' ').replace(' ', '')
-        const burned = value_splitted[10].replace('%Burned', ' ').replace(' ', '')
+            if (value_splitted[1].includes('+')) percentage = ' incremento del ';
+            if (value_splitted[1].includes('-')) percentage = ' decrementato del ';
 
-        console.log("Value kdx: " + value_kdx)
-        console.log("Market cap: " + market_cap)
-        console.log("Circulating supply: " + circulating_supply)
-        console.log("Burned: " + burned)
-        console.log("TVL Stored: " + tvl_stored)
-        console.log("Price Stored: " + price_stored)
+            const value_kdx = value_splitted[1] + "$ " + percentage + " " + value_splitted[2]
+            const market_cap = value_splitted[5].replace('supply', '').replace('-', '').replace(' ', '')
+            const circulating_supply = value_splitted[8].replace('supply', ' ').replace(' ', '')
+            const burned = value_splitted[10].replace('%Burned', ' ').replace(' ', '')
 
-        let ticker = await binance.prices();
+            console.log("Value kdx: " + value_kdx)
+            console.log("Market cap: " + market_cap)
+            console.log("Circulating supply: " + circulating_supply)
+            console.log("Burned: " + burned)
+            console.log("TVL Stored: " + tvl_stored)
+            console.log("Price Stored: " + price_stored)
 
-        let txt = '-- KADDEX BOT --\n ' +
-            '\nKDA Price: ' + parseFloat(ticker.KDAUSDT).toFixed(3) + '$' +
-            "\nKDX Price: " + String(value_kdx) + "%" +
-            '\nCurrent TVL: ' + formatNumber(tvl) + "$" +
-            '\nMarket Cap: ' + market_cap + "$" +
-            '\nCirculating supply: ' + circulating_supply + " KDX" +
-            '\nBurned: ' + burned + " KDX" +
-            "\n" + "" +
-            "\nValue Updated: " + "" + moment().format("Y-MM-DD h:mm:ss") + " \n" +
-            "\n" + ""
+            let ticker = await binance.prices();
 
-        await axios.get(telegram + txt)
+            let txt = '-- KADDEX BOT --\n ' +
+                '\nKDA Price: ' + parseFloat(ticker.KDAUSDT).toFixed(3) + '$' +
+                "\nKDX Price: " + String(value_kdx) + "%" +
+                '\nCurrent TVL: ' + formatNumber(tvl) + "$" +
+                '\nMarket Cap: ' + market_cap + "$" +
+                '\nCirculating supply: ' + circulating_supply + " KDX" +
+                '\nBurned: ' + burned + " KDX" +
+                "\n" + "" +
+                "\nValue Updated: " + "" + moment().format("Y-MM-DD h:mm:ss") + " \n" +
+                "\n" + ""
+
+            await axios.get(telegram + txt)
+        }
 
         //}
 
@@ -117,6 +120,6 @@ async function main() {
     }
 }
 
-schedule.scheduleJob('0 * * * *', async function () {
+schedule.scheduleJob('* * * * *', async function () {
     await main();
 });
