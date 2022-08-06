@@ -85,7 +85,7 @@ async function main() {
         if (value_splitted[1].includes('+')) percentage = ' incremento del ';
         if (value_splitted[1].includes('-')) percentage = ' decrementato del ';
 
-        const value_kdx = value_splitted[1] + " " + percentage + " " + value_splitted[2]
+        const value_kdx = value_splitted[1] + "$ " + percentage + " " + value_splitted[2]
         const market_cap = value_splitted[5].replace('supply', '').replace('-', '').replace(' ', '').replace(/[^a-zA-Z0-9 ]/g, '');
         const circulating_supply = value_splitted[8].replace('supply', ' ').replace(' ', '').replace(/[^a-zA-Z0-9 ]/g, '');
         const burned = value_splitted[10].replace('%Burned', ' ').replace(' ', '').replace(/[^a-zA-Z0-9 ]/g, '');
