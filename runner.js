@@ -114,7 +114,6 @@ async function main() {
 
     } catch (e) {
         console.error(e)
-        //await axios.get(telegram + e.toString())
     }
 }
 
