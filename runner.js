@@ -12,9 +12,6 @@ emitter.setMaxListeners(1000)
 
 require('dotenv').config();
 
-let tvl_stored = 0;
-let price_stored = 0;
-
 const URL_API_KADDEX_STATS = 'https://swap.kaddex.com/analytics/kdx';
 
 let formatNumber = function (number) {
@@ -64,18 +61,17 @@ async function main() {
 
         const browser = await puppeteer.launch({
             headless: true,
-            slowMo: 600,
+            slowMo: 500,
             args: ['--no-sandbox']
         });
 
         const page = await browser.newPage();
-        await page.goto(URL_API_KADDEX_STATS, {waitUntil: 'load'});
+        await page.goto(URL_API_KADDEX_STATS, {waitUntil: 'networkidle2'});
 
         const element = await page.waitForSelector('.column.w-100.h-100.main');
         const value = await element.evaluate(el => el.textContent);
 
-        await page.close();
-        await browser.close();
+
 
         console.log(value.split(" "))
 
@@ -83,7 +79,7 @@ async function main() {
 
         let percentage = '';
 
-        if (!value_splitted[1].includes('--')) {
+        if (!value_splitted[1].includes('--') || !value_splitted[1].includes('-NaN')) {
 
             if (value_splitted[1].includes('+')) percentage = ' incremento del ';
             if (value_splitted[1].includes('-')) percentage = ' decrementato del ';
@@ -97,8 +93,6 @@ async function main() {
             console.log("Market cap: " + market_cap)
             console.log("Circulating supply: " + circulating_supply)
             console.log("Burned: " + burned)
-            console.log("TVL Stored: " + tvl_stored)
-            console.log("Price Stored: " + price_stored)
 
             let ticker = await binance.prices();
 
@@ -115,6 +109,10 @@ async function main() {
 
             await axios.get(telegram + txt)
         }
+
+        await page.close();
+        await browser.close();
+
 
     } catch (e) {
         console.error(e)
