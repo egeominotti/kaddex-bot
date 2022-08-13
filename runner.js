@@ -64,14 +64,17 @@ async function main() {
 
         const browser = await puppeteer.launch({
             headless: true,
-            slowMo: 500,
+            slowMo: 600,
             args: ['--no-sandbox']
         });
 
         const page = await browser.newPage();
-        await page.goto(URL_API_KADDEX_STATS, {waitUntil: 'networkidle2'});
-        const element = await page.waitForSelector('.FlexContainer__STYFlexContainer-sc-16sly3k-0.flviZN.column');
+        await page.goto(URL_API_KADDEX_STATS, {waitUntil: 'load'});
+
+        const element = await page.waitForSelector('div#root');
         const value = await element.evaluate(el => el.textContent);
+
+        await page.close();
         await browser.close();
 
         console.log(value.split(" "))
@@ -88,7 +91,7 @@ async function main() {
             const value_kdx = value_splitted[1] + "$ " + percentage + " " + value_splitted[2]
             const market_cap = value_splitted[5].replace('supply', '').replace('-', '').replace(' ', '')
             const circulating_supply = value_splitted[8].replace('supply', ' ').replace(' ', '')
-            const burned = value_splitted[10].replace('%Burned', ' ').replace(' ', '')
+            const burned = value_splitted[10].replace('%Burned', ' ').replace('%detailsBurned','').replace(' ', '')
 
             console.log("Value kdx: " + value_kdx)
             console.log("Market cap: " + market_cap)
@@ -120,6 +123,6 @@ async function main() {
     }
 }
 
-schedule.scheduleJob('*/30 * * * *', async function () {
+schedule.scheduleJob('* * * * *', async function () {
     await main();
 });
