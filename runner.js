@@ -40,6 +40,13 @@ async function main() {
     let tvl = 0;
     //let price = 0
 
+    const browser = await puppeteer.launch({
+        headless: true,
+        slowMo: 500,
+        args: ['--no-sandbox']
+    });
+
+
     try {
 
         //let res_kd = await axios.get(process.env.URL_API_KADDEX + "dateStart=" + current_date + "&dateEnd=" + current_date)
@@ -59,18 +66,12 @@ async function main() {
             }
         }
 
-        const browser = await puppeteer.launch({
-            headless: true,
-            slowMo: 500,
-            args: ['--no-sandbox']
-        });
 
         const page = await browser.newPage();
         await page.goto(URL_API_KADDEX_STATS, {waitUntil: 'networkidle2'});
 
         const element = await page.waitForSelector('.column.w-100.h-100.main');
         const value = await element.evaluate(el => el.textContent);
-
 
 
         console.log(value.split(" "))
@@ -115,6 +116,7 @@ async function main() {
 
 
     } catch (e) {
+        await browser.close();
         console.error(e)
     }
 }
