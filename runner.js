@@ -71,7 +71,7 @@ async function main() {
         const page = await browser.newPage();
         await page.goto(URL_API_KADDEX_STATS, {waitUntil: 'load'});
 
-        const element = await page.waitForSelector('div#root');
+        const element = await page.waitForSelector('.column.w-100.h-100.main');
         const value = await element.evaluate(el => el.textContent);
 
         await page.close();
@@ -88,10 +88,10 @@ async function main() {
             if (value_splitted[1].includes('+')) percentage = ' incremento del ';
             if (value_splitted[1].includes('-')) percentage = ' decrementato del ';
 
-            const value_kdx = value_splitted[1] + "$ " + percentage + " " + value_splitted[2]
+            const value_kdx = value_splitted[1] + "$ " + percentage + " " + value_splitted[3]
             const market_cap = value_splitted[5].replace('supply', '').replace('-', '').replace(' ', '')
             const circulating_supply = value_splitted[8].replace('supply', ' ').replace(' ', '')
-            const burned = value_splitted[10].replace('%Burned', ' ').replace('%detailsBurned','').replace(' ', '')
+            const burned = value_splitted[10].replace('%Burned', ' ').replace('%detailsBurned', '').replace(' ', '')
 
             console.log("Value kdx: " + value_kdx)
             console.log("Market cap: " + market_cap)
@@ -115,8 +115,6 @@ async function main() {
 
             await axios.get(telegram + txt)
         }
-
-        //}
 
     } catch (e) {
         console.error(e)
