@@ -13,6 +13,7 @@ emitter.setMaxListeners(1000)
 require('dotenv').config();
 
 const URL_API_KADDEX_STATS = 'https://swap.kaddex.com/analytics/kdx';
+const PAGE_KISHK = 'https://swap.kaddex.com/token-info/KISHK';
 
 let formatNumber = function (number) {
     let splitNum;
@@ -41,7 +42,7 @@ async function main() {
     //let price = 0
 
     const browser = await puppeteer.launch({
-        headless: true,
+        headless: false,
         slowMo: 500,
         args: ['--no-sandbox']
     });
@@ -69,16 +70,23 @@ async function main() {
 
         const page = await browser.newPage();
         await page.goto(URL_API_KADDEX_STATS, {waitUntil: 'networkidle2'});
-
         const element = await page.waitForSelector('.column.w-100.h-100.main');
         const value = await element.evaluate(el => el.textContent);
-
+        //await page.close();
 
         console.log(value.split(" "))
 
         const value_splitted = value.split(" ");
 
         let percentage = '';
+
+        const page_khisk = await browser.newPage();
+        await page_khisk.goto(PAGE_KISHK, {waitUntil: 'networkidle2'});
+        const element_kish = await page_khisk.waitForSelector('.flex.column.w-100.justify-sb');
+        const value_kishk = await element_kish.evaluate(el => el.textContent);
+        //await page_khisk.close();
+
+        console.log(value_kishk)
 
         if (!value_splitted[1].includes('--') || !value_splitted[1].includes('-NaN')) {
 
@@ -100,6 +108,7 @@ async function main() {
             let txt = '-- KADDEX BOT --\n ' +
                 '\nKDA Price: ' + parseFloat(ticker.KDAUSDT).toFixed(3) + '$' +
                 "\nKDX Price: " + String(value_kdx) + "%" +
+                "\nKISHK Price: " + value_kishk.replace('Price$','') +
                 '\nCurrent TVL: ' + formatNumber(tvl) + "$" +
                 '\nMarket Cap: ' + market_cap + "$" +
                 '\nCirculating supply: ' + circulating_supply + " KDX" +
@@ -112,11 +121,12 @@ async function main() {
         }
 
         await page.close();
+        await page_khisk.close();
         await browser.close();
 
 
     } catch (e) {
-        await browser.close();
+        //await browser.close();
         console.error(e)
     }
 }
