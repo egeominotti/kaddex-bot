@@ -42,7 +42,7 @@ async function main() {
     //let price = 0
 
     const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         slowMo: 500,
         args: ['--no-sandbox']
     });
