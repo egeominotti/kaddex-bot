@@ -89,7 +89,7 @@ async function main() {
         console.log(value_kishk)
 
         const page_kapy = await browser.newPage();
-        await page_kapy.goto(PAGE_KISHK, {waitUntil: 'networkidle2'});
+        await page_kapy.goto(PAGE_KAPY, {waitUntil: 'networkidle2'});
         const element_kapy = await page_kapy.waitForSelector('.flex.column.w-100.justify-sb');
         const value_kapy = await element_kapy.evaluate(el => el.textContent);
 
@@ -139,6 +139,6 @@ async function main() {
     }
 }
 
-schedule.scheduleJob('* * * * *', async function () {
+schedule.scheduleJob('*/30 * * * *', async function () {
     await main();
 });
