@@ -13,8 +13,17 @@ emitter.setMaxListeners(1000)
 require('dotenv').config();
 
 const URL_API_KADDEX_STATS = 'https://swap.kaddex.com/analytics/kdx';
-const PAGE_KISHK = 'https://swap.kaddex.com/token-info/KISHK';
-const PAGE_KAPY = 'https://swap.kaddex.com/token-info/KAPY';
+
+const PAIR = [
+    'HYPE',
+    'MOK',
+    'kwUSDC',
+    'KDL',
+    'KDS',
+    'BKA',
+    'KAPY',
+]
+
 
 let formatNumber = function (number) {
     let splitNum;
@@ -35,12 +44,9 @@ const telegram =
 
 async function main() {
 
-    console.log("I'm alive!!");
-
     //const current_date = moment().format("Y-MM-DD")
 
     let tvl = 0;
-    //let price = 0
 
     const browser = await puppeteer.launch({
         headless: true,
@@ -51,16 +57,7 @@ async function main() {
 
     try {
 
-        //let res_kd = await axios.get(process.env.URL_API_KADDEX + "dateStart=" + current_date + "&dateEnd=" + current_date)
         let res_dl = await axios.get(process.env.URL_API_DEFILAMA)
-
-        /*
-        if (res_kd.status === 200) {
-            if (res_kd.data[0].usdPrice !== undefined) {
-                price = res_kd.data[0].usdPrice.close.toFixed(3);
-            }
-        }
-         */
 
         if (res_dl.status === 200) {
             if (res_dl.data.currentChainTvls !== undefined) {
@@ -73,7 +70,7 @@ async function main() {
         await page.goto(URL_API_KADDEX_STATS, {waitUntil: 'networkidle2'});
         const element = await page.waitForSelector('.column.w-100.h-100.main');
         const value = await element.evaluate(el => el.textContent);
-        //await page.close();
+        await page.close();
 
         console.log(value.split(" "))
 
@@ -81,19 +78,19 @@ async function main() {
 
         let percentage = '';
 
-        const page_khisk = await browser.newPage();
-        await page_khisk.goto(PAGE_KISHK, {waitUntil: 'networkidle2'});
-        const element_kish = await page_khisk.waitForSelector('.flex.column.w-100.justify-sb');
-        const value_kishk = await element_kish.evaluate(el => el.textContent);
+        let stats = '';
 
-        console.log(value_kishk)
+        for (const pair of PAIR) {
+            const page = await browser.newPage();
+            await page.goto('https://swap.kaddex.com/token-info/' + pair, {waitUntil: 'networkidle2'});
+            const element = await page.waitForSelector('.flex.column.w-100.justify-sb');
+            let value = await element.evaluate(el => el.textContent);
+            console.log(pair + " " + value)
+            stats += pair + " " + value + "\n";
+            await page.close();
+        }
 
-        const page_kapy = await browser.newPage();
-        await page_kapy.goto(PAGE_KAPY, {waitUntil: 'networkidle2'});
-        const element_kapy = await page_kapy.waitForSelector('.flex.column.w-100.justify-sb');
-        const value_kapy = await element_kapy.evaluate(el => el.textContent);
-
-        console.log(value_kapy)
+        console.log(stats)
 
         if (!value_splitted[1].includes('--') || !value_splitted[1].includes('-NaN')) {
 
@@ -115,8 +112,6 @@ async function main() {
             let txt = '-- KADDEX BOT --\n ' +
                 '\nKDA Price: ' + parseFloat(ticker.KDAUSDT).toFixed(3) + '$' +
                 "\nKDX Price: " + String(value_kdx) + "%" +
-                "\nKISHK Price: " + value_kishk.replace('Price$','') +
-                "\nKAPY Price: " + value_kapy.replace('Price$','') +
                 '\nCurrent TVL: ' + formatNumber(tvl) + "$" +
                 '\nMarket Cap: ' + market_cap + "$" +
                 '\nCirculating supply: ' + circulating_supply + " KDX" +
@@ -128,9 +123,7 @@ async function main() {
             await axios.get(telegram + txt)
         }
 
-        await page.close();
-        await page_khisk.close();
-        await page_kapy.close();
+
         await browser.close();
 
 
@@ -139,6 +132,6 @@ async function main() {
     }
 }
 
-schedule.scheduleJob('*/30 * * * *', async function () {
+schedule.scheduleJob('* * * * *', async function () {
     await main();
 });
