@@ -45,8 +45,6 @@ const telegram =
 
 async function main() {
 
-    //const current_date = moment().format("Y-MM-DD")
-
     let tvl = 0;
 
     const browser = await puppeteer.launch({
@@ -92,6 +90,7 @@ async function main() {
             let inc_dec = split[2]
 
             stats += pair + " " + "Price " + price + " " + inc_dec + "\n";
+            console.log(stats)
             await page.close();
         }
 
@@ -137,6 +136,7 @@ async function main() {
         await browser.close();
         console.error(e)
     }
+
 }
 
 schedule.scheduleJob('* * * * *', async function () {
