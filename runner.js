@@ -89,7 +89,7 @@ async function main() {
             let price = split[1]
             let inc_dec = split[2]
 
-            stats += pair + " " + "Price " + price + " " + inc_dec + "\n";
+            stats += pair + " " + "Price " + price + " " + inc_dec + "%" + "\n";
             console.log(stats)
             await page.close();
         }
@@ -140,6 +140,6 @@ async function main() {
 
 }
 
-schedule.scheduleJob('* * * * *', async function () {
+schedule.scheduleJob('*/30 * * * *', async function () {
     await main();
 });
