@@ -66,7 +66,6 @@ async function main() {
             }
         }
 
-
         const page = await browser.newPage();
         await page.goto(URL_API_KADDEX_STATS, {waitUntil: 'networkidle2'});
         const element = await page.waitForSelector('.column.w-100.h-100.main');
@@ -82,6 +81,7 @@ async function main() {
         let stats = '';
 
         for (const pair of PAIR) {
+
             const page = await browser.newPage();
             await page.goto('https://swap.kaddex.com/token-info/' + pair, {waitUntil: 'networkidle2'});
             const element = await page.waitForSelector('.flex.column.w-100.justify-sb');
@@ -90,7 +90,7 @@ async function main() {
             let split = value.split(' ');
             let price = split[1]
             let inc_dec = split[2]
-            //console.log(pair + " " + value)
+
             stats += pair + " " + "Price " + price + " " + inc_dec + "\n";
             await page.close();
         }
