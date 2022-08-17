@@ -141,6 +141,16 @@ async function main() {
 
 }
 
-schedule.scheduleJob('* * * * *', async function () {
-    await main();
-});
+if(process.env.NODE_ENV === 'production') {
+
+    schedule.scheduleJob('*/30 * * * *', async function () {
+        await main();
+    });
+}
+
+if(process.env.NODE_ENV === 'dev') {
+
+    schedule.scheduleJob('* * * * *', async function () {
+        await main();
+    });
+}
