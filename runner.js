@@ -19,6 +19,7 @@ const PAIR = [
     'KAPY',
     'HYPE',
     'MOK',
+    'FLUX',
     'kwUSDC',
     'KDL',
     'KDS',
