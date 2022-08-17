@@ -86,8 +86,12 @@ async function main() {
             await page.goto('https://swap.kaddex.com/token-info/' + pair, {waitUntil: 'networkidle2'});
             const element = await page.waitForSelector('.flex.column.w-100.justify-sb');
             let value = await element.evaluate(el => el.textContent);
-            console.log(pair + " " + value)
-            stats += pair + " " + value + "\n";
+
+            let split = value.split(' ');
+            let price = split[1]
+            let inc_dec = split[2]
+            //console.log(pair + " " + value)
+            stats += pair + " " + "Price " + price + " " + inc_dec + "\n";
             await page.close();
         }
 
@@ -113,11 +117,12 @@ async function main() {
             let txt = '-- KADDEX BOT --\n ' +
                 '\nKDA Price: ' + parseFloat(ticker.KDAUSDT).toFixed(3) + '$' +
                 "\nKDX Price: " + String(value_kdx) + "%" +
-                "\n" + stats +
                 '\nCurrent TVL: ' + formatNumber(tvl) + "$" +
                 '\nMarket Cap: ' + market_cap + "$" +
                 '\nCirculating supply: ' + circulating_supply + " KDX" +
                 '\nBurned: ' + burned + " KDX" +
+                "\n" + "" +
+                "\n" + stats +
                 "\n" + "" +
                 "\nValue Updated: " + "" + moment().format("Y-MM-DD h:mm:ss") + " \n" +
                 "\n" + ""
