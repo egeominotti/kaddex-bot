@@ -115,6 +115,7 @@ async function main() {
 
             let txt = '-- KADDEX BOT --\n ' +
                 '\nKDA Price: ' + parseFloat(ticker.KDAUSDT).toFixed(3) + '$' +
+                "\n" + "" +
                 "\nKDX Price: " + String(value_kdx) + "%" +
                 '\nCurrent TVL: ' + formatNumber(tvl) + "$" +
                 '\nMarket Cap: ' + market_cap + "$" +
