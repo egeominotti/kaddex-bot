@@ -15,6 +15,7 @@ require('dotenv').config();
 const URL_API_KADDEX_STATS = 'https://swap.kaddex.com/analytics/kdx';
 const PAGE_KISHK = 'https://swap.kaddex.com/token-info/KISHK';
 const PAGE_KAPY = 'https://swap.kaddex.com/token-info/KAPY';
+const PAGE_MOK = 'https://swap.kaddex.com/token-info/MOK';
 
 let formatNumber = function (number) {
     let splitNum;
@@ -94,6 +95,13 @@ async function main() {
         const value_kapy = await element_kapy.evaluate(el => el.textContent);
 
         console.log(value_kapy)
+        
+        const page_mok = await browser.newPage();
+        await page_mok.goto(PAGE_MOK, {waitUntil: 'networkidle2'});
+        const element_mok = await page_mok.waitForSelector('.flex.column.w-100.justify-sb');
+        const value_mok = await element_mok.evaluate(el => el.textContent);
+
+        console.log(value_mok)
 
         if (!value_splitted[1].includes('--') || !value_splitted[1].includes('-NaN')) {
 
@@ -117,6 +125,7 @@ async function main() {
                 "\nKDX Price: " + String(value_kdx) + "%" +
                 "\nKISHK Price: " + value_kishk.replace('Price$','') +
                 "\nKAPY Price: " + value_kapy.replace('Price$','') +
+                "\nMOK Price: " + value_mok.replace('Price$','') +
                 '\nCurrent TVL: ' + formatNumber(tvl) + "$" +
                 '\nMarket Cap: ' + market_cap + "$" +
                 '\nCirculating supply: ' + circulating_supply + " KDX" +
@@ -131,6 +140,7 @@ async function main() {
         await page.close();
         await page_khisk.close();
         await page_kapy.close();
+        await page_mok.close();
         await browser.close();
 
 
