@@ -15,13 +15,14 @@ require('dotenv').config();
 const URL_API_KADDEX_STATS = 'https://swap.kaddex.com/analytics/kdx';
 
 const PAIR = [
+    'KISHK',
+    'KAPY',
     'HYPE',
     'MOK',
     'kwUSDC',
     'KDL',
     'KDS',
     'BKA',
-    'KAPY',
 ]
 
 
