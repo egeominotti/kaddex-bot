@@ -130,11 +130,11 @@ async function main() {
             await axios.get(telegram + txt)
         }
 
-
         await browser.close();
 
 
     } catch (e) {
+        await browser.close();
         console.error(e)
     }
 }
