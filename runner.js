@@ -24,6 +24,7 @@ const PAIR = [
     'KDL',
     'KDS',
     'BKA',
+    'JDE',
 ]
 
 
@@ -143,7 +144,7 @@ async function main() {
 
 if (process.env.NODE_ENV === 'production') {
 
-    schedule.scheduleJob('*/30 * * * *', async function () {
+    schedule.scheduleJob('* */4 * * *', async function () {
         await main();
     });
 }
