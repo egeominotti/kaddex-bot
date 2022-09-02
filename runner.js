@@ -51,7 +51,7 @@ async function main() {
 
     const browser = await puppeteer.launch({
         headless: true,
-        slowMo: 500,
+        slowMo: 30,
         args: ['--no-sandbox']
     });
 
