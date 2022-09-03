@@ -144,7 +144,7 @@ async function main() {
 
 if (process.env.NODE_ENV === 'production') {
 
-    schedule.scheduleJob('* */4 * * *', async function () {
+    schedule.scheduleJob('0 */4 * * *', async function () {
         await main();
     });
 }
